@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NoChinaIP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="header">
+        <h1>🌍 NoChinaIP</h1>
+        <p class="subtitle">Your Public IP Location Detector</p>
+      </div>
+
+      <div class="ip-info-card">
+        <div class="flag-display" id="flag-display">
+          🌍
+        </div>
+        <div class="info-content">
+          <h2 id="country-name">Detecting...</h2>
+          <p id="country-code">Please wait</p>
+          <button id="refresh-btn" class="refresh-btn">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="feature-item">
+          <span class="icon">🔒</span>
+          <span>Privacy Focused</span>
+        </div>
+        <div class="feature-item">
+          <span class="icon">⚡</span>
+          <span>Real-time Detection</span>
+        </div>
+        <div class="feature-item">
+          <span class="icon">🎯</span>
+          <span>Accurate Location</span>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Always visible in system tray</p>
+      </div>
+    </main>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
