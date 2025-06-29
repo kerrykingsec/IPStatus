@@ -2,8 +2,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::{
-    tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
-    Manager, Runtime, WebviewUrl, WebviewWindowBuilder,
+    tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
+    Manager, WebviewUrl, WebviewWindowBuilder,
 };
 use serde::{Deserialize, Serialize};
 
@@ -125,57 +125,6 @@ fn get_flag_emoji(country_code: &str) -> String {
     }
 }
 
-fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
-    // Use a simple approach - try to build the tray with or without icon
-    let mut tray_builder = TrayIconBuilder::with_id("main-tray")
-        .tooltip("IPStatus - Checking location...")
-        .on_tray_icon_event(|tray, event| {
-            if let TrayIconEvent::Click {
-                button: MouseButton::Left,
-                button_state: tauri::tray::MouseButtonState::Up,
-                ..
-            } = event
-            {
-                let app = tray.app_handle();
-                if let Some(window) = app.get_webview_window("main") {
-                    let _ = window.show();
-                    let _ = window.set_focus();
-                } else {
-                    let _window = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
-                        .title("IPStatus")
-                        .build();
-                }
-            }
-        });
-
-    // Try to set icon if available
-    if let Some(icon) = app.default_window_icon() {
-        tray_builder = tray_builder.icon(icon.clone());
-    }
-
-    let _tray = tray_builder.build(app)?;
-
-    // Fetch IP info and update tray icon
-    let app_handle = app.clone();
-    tokio::spawn(async move {
-        match get_public_ip_info().await {
-            Ok(country_info) => {
-                let tooltip = format!("IPStatus - {} {}", country_info.flag_emoji, country_info.name);
-                if let Some(tray) = app_handle.tray_by_id("main-tray") {
-                    let _ = tray.set_tooltip(Some(tooltip));
-                }
-            }
-            Err(_) => {
-                if let Some(tray) = app_handle.tray_by_id("main-tray") {
-                    let _ = tray.set_tooltip(Some("IPStatus - 🌍 Unknown Location"));
-                }
-            }
-        }
-    });
-
-    Ok(())
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -183,11 +132,52 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .invoke_handler(tauri::generate_handler![get_public_ip_info])
         .setup(|app| {
-            // Try to setup tray, but don't fail if it doesn't work
-            if let Err(e) = setup_tray(app.handle()) {
-                eprintln!("Failed to setup system tray: {}", e);
-                eprintln!("Application will continue without system tray functionality");
-            }
+            // Create system tray following official documentation
+            let _tray = TrayIconBuilder::with_id("main-tray")
+                .tooltip("IPStatus - Checking location...")
+                .icon(app.default_window_icon().unwrap().clone())
+                .on_tray_icon_event(|tray, event| match event {
+                    TrayIconEvent::Click {
+                        button: MouseButton::Left,
+                        button_state: MouseButtonState::Up,
+                        ..
+                    } => {
+                        println!("left click pressed and released");
+                        // Show and focus the main window when the tray is clicked
+                        let app = tray.app_handle();
+                        if let Some(window) = app.get_webview_window("main") {
+                            let _ = window.show();
+                            let _ = window.set_focus();
+                        } else {
+                            let _window = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
+                                .title("IPStatus")
+                                .build();
+                        }
+                    }
+                    _ => {
+                        println!("unhandled tray event {:?}", event);
+                    }
+                })
+                .build(app)?;
+
+            // Fetch IP info and update tray tooltip
+            let app_handle = app.handle().clone();
+            tokio::spawn(async move {
+                match get_public_ip_info().await {
+                    Ok(country_info) => {
+                        let tooltip = format!("IPStatus - {} {}", country_info.flag_emoji, country_info.name);
+                        if let Some(tray) = app_handle.tray_by_id("main-tray") {
+                            let _ = tray.set_tooltip(Some(tooltip));
+                        }
+                    }
+                    Err(_) => {
+                        if let Some(tray) = app_handle.tray_by_id("main-tray") {
+                            let _ = tray.set_tooltip(Some("IPStatus - 🌍 Unknown Location"));
+                        }
+                    }
+                }
+            });
+
             Ok(())
         })
         .run(tauri::generate_context!())
