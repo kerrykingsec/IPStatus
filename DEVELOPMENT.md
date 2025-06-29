@@ -3,7 +3,7 @@
 ## Project Structure
 
 ```
-NoChinaIP/
+IPStatus/
 ├── src/                    # Frontend code
 │   ├── index.html         # Main HTML file
 │   ├── styles.css         # Application styles
@@ -178,4 +178,4 @@ npm run tauri build -- --target x86_64-pc-windows-msvc # Windows x64
    - Verify API service availability
    - Test with different networks
 
-For more issues, check the [GitHub Issues](https://github.com/yourusername/NoChinaIP/issues) page. 
+For more issues, check the [GitHub Issues](https://github.com/yourusername/IPStatus/issues) page. 

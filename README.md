@@ -1,8 +1,8 @@
-# 🌍 NoChinaIP
+# 🌍 IPStatus
 
 A Tauri-based desktop application that automatically detects your public IP address and displays the corresponding country flag in the system tray.
 
-![NoChinaIP Screenshot](https://via.placeholder.com/600x400?text=NoChinaIP)
+![IPStatus Screenshot](https://via.placeholder.com/600x400?text=IPStatus)
 
 ## ✨ Features
 
@@ -24,8 +24,8 @@ A Tauri-based desktop application that automatically detects your public IP addr
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/NoChinaIP.git
-cd NoChinaIP
+git clone https://github.com/yourusername/IPStatus.git
+cd IPStatus
 ```
 
 2. Install dependencies:
@@ -47,14 +47,14 @@ npm run build
 
 ### Stable Releases
 
-Download the latest stable release from the [Releases](https://github.com/yourusername/NoChinaIP/releases) page:
+Download the latest stable release from the [Releases](https://github.com/yourusername/IPStatus/releases) page:
 
-- **macOS (Apple Silicon)**: `NoChinaIP_aarch64.dmg`
-- **Windows (x64)**: `NoChinaIP_x64.msi`
+- **macOS (Apple Silicon)**: `IPStatus_aarch64.dmg`
+- **Windows (x64)**: `IPStatus_x64.msi`
 
 ### Development Builds
 
-Development builds are automatically created for every commit to the `develop` branch and can be found in the [Actions](https://github.com/yourusername/NoChinaIP/actions) tab.
+Development builds are automatically created for every commit to the `develop` branch and can be found in the [Actions](https://github.com/yourusername/IPStatus/actions) tab.
 
 ## 🏗️ Build Process
 
@@ -107,7 +107,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🐛 Bug Reports
 
-If you find a bug, please create an issue on the [Issues](https://github.com/yourusername/NoChinaIP/issues) page with:
+If you find a bug, please create an issue on the [Issues](https://github.com/yourusername/IPStatus/issues) page with:
 
 - Your operating system and version
 - Steps to reproduce the bug
@@ -126,7 +126,7 @@ If you find this project useful, please consider:
 ## 📞 Contact
 
 - GitHub: [@yourusername](https://github.com/yourusername)
-- Issues: [Project Issues](https://github.com/yourusername/NoChinaIP/issues)
+- Issues: [Project Issues](https://github.com/yourusername/IPStatus/issues)
 
 ---
 

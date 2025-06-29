@@ -1,8 +1,8 @@
 [package]
-name = "no-china-ip"
+name = "ip-status"
 version = "0.1.0"
-description = "A Tauri app that shows country flags based on public IP"
-authors = ["NoChinaIP Team"]
+description = "A Tauri app that shows country flags based on public IP status"
+authors = ["IPStatus Team"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

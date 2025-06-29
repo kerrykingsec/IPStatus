@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "NoChinaIP",
+  "productName": "IPStatus",
   "version": "0.1.0",
-  "identifier": "com.nochina.ip",
+  "identifier": "com.ipstatus.app",
   "build": {
     "frontendDist": "../src"
   },
@@ -10,7 +10,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "NoChinaIP",
+        "title": "IPStatus",
         "width": 800,
         "height": 600,
         "visible": false

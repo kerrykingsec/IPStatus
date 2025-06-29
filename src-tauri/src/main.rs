@@ -127,7 +127,7 @@ fn get_flag_emoji(country_code: &str) -> String {
 
 fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
     let _tray = TrayIconBuilder::with_id("main-tray")
-        .tooltip("NoChinaIP - Checking location...")
+        .tooltip("IPStatus - Checking location...")
         .icon(app.default_window_icon().unwrap().clone())
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click {
@@ -142,7 +142,7 @@ fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
                     let _ = window.set_focus();
                 } else {
                     let _window = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
-                        .title("NoChinaIP")
+                        .title("IPStatus")
                         .build();
                 }
             }
@@ -154,14 +154,14 @@ fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
     tokio::spawn(async move {
         match get_public_ip_info().await {
             Ok(country_info) => {
-                let tooltip = format!("NoChinaIP - {} {}", country_info.flag_emoji, country_info.name);
+                let tooltip = format!("IPStatus - {} {}", country_info.flag_emoji, country_info.name);
                 if let Some(tray) = app_handle.tray_by_id("main-tray") {
                     let _ = tray.set_tooltip(Some(tooltip));
                 }
             }
             Err(_) => {
                 if let Some(tray) = app_handle.tray_by_id("main-tray") {
-                    let _ = tray.set_tooltip(Some("NoChinaIP - 🌍 Unknown Location"));
+                    let _ = tray.set_tooltip(Some("IPStatus - 🌍 Unknown Location"));
                 }
             }
         }
