@@ -1,6 +1,6 @@
 [package]
 name = "ip-status"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Tauri app that shows country flags based on public IP status"
 authors = ["IPStatus Team"]
 edition = "2021"
