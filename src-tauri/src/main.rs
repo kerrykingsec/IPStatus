@@ -126,9 +126,9 @@ fn get_flag_emoji(country_code: &str) -> String {
 }
 
 fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
-    let _tray = TrayIconBuilder::with_id("main-tray")
+    // Use a simple approach - try to build the tray with or without icon
+    let mut tray_builder = TrayIconBuilder::with_id("main-tray")
         .tooltip("IPStatus - Checking location...")
-        .icon(app.default_window_icon().unwrap().clone())
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click {
                 button: MouseButton::Left,
@@ -146,8 +146,14 @@ fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
                         .build();
                 }
             }
-        })
-        .build(app)?;
+        });
+
+    // Try to set icon if available
+    if let Some(icon) = app.default_window_icon() {
+        tray_builder = tray_builder.icon(icon.clone());
+    }
+
+    let _tray = tray_builder.build(app)?;
 
     // Fetch IP info and update tray icon
     let app_handle = app.clone();
@@ -177,7 +183,11 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .invoke_handler(tauri::generate_handler![get_public_ip_info])
         .setup(|app| {
-            setup_tray(app.handle())?;
+            // Try to setup tray, but don't fail if it doesn't work
+            if let Err(e) = setup_tray(app.handle()) {
+                eprintln!("Failed to setup system tray: {}", e);
+                eprintln!("Application will continue without system tray functionality");
+            }
             Ok(())
         })
         .run(tauri::generate_context!())
